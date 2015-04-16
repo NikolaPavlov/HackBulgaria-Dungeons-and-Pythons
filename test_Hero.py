@@ -46,14 +46,6 @@ class TestHero(unittest.TestCase):
     def can_cast_false(self):
         self.assertFalse(self.dead_hero.can_cast())
 
-    def test_take_damage(self):
-        self.hero1.take_damage(10)
-        self.assertEqual(self.hero1.get_health(), 90)
-
-    def test_take_massive_damage(self):
-        self.hero1.take_damage(999)
-        self.assertEqual(self.hero1.get_health(), 0)
-
     def test_take_healing(self):
         self.injured_hero.take_healing(20)
         self.assertEqual(self.injured_hero.get_health(), 30)

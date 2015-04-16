@@ -48,6 +48,14 @@ class TestUnit(unittest.TestCase):
         self.injured_unit.take_healing(999)
         self.assertEqual(self.injured_unit.get_health(), 50)
 
+    def test_take_damage(self):
+        self.unit1.take_damage(10)
+        self.assertEqual(self.unit1.get_health(), 90)
+
+    def test_take_massive_damage(self):
+        self.unit1.take_damage(999)
+        self.assertEqual(self.unit1.get_health(), 0)
+
     def test_take_mana(self):
         pass
 
