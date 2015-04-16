@@ -4,8 +4,12 @@ from Unit import Unit
 class Hero(Unit):
 
     def __init__(
-        self, name="Bron", title="Dragonslayer", \
-        health=100, mana=100, mana_regeneration_rate=2):
+        self, \
+        name="Bron", \
+        title="Dragonslayer", \
+        health=100, \
+        mana=100, \
+        mana_regeneration_rate=2):
         Unit.__init__(self, health, mana)
         self.name = name
         self.title = title

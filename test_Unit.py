@@ -13,8 +13,6 @@ class TestUnit(unittest.TestCase):
         self.weapon1 = Weapon()
         self.spell1 = Spell()
 
-        # print(self.unit1.has_weapon)
-
     def test_constructor(self):
         self.assertIsInstance(self.unit1, Unit)
 
@@ -63,11 +61,17 @@ class TestUnit(unittest.TestCase):
 
     def test_attack_by_weapon(self):
         self.unit1.equip(self.weapon1)
-        self.assertEqual(self.unit1.attack(by="weapon"), 20)
+        self.assertEqual(self.unit1.attack(by='weapon'), 20)
 
     def test_attack_by_spell(self):
         self.unit1.learn(self.spell1)
-        self.assertEqual(self.unit1.attack(by="spell"), 30)
+        self.assertEqual(self.unit1.attack(by='spell'), 30)
+
+    def test_attack_withowth_weapon(self):
+        self.assertEqual(self.unit1.attack(by='weapon'), 0)
+
+    def test_attack_withowth_spell(self):
+        self.assertEqual(self.unit1.attack(by='spell'), 0)
 
 if __name__ == "__main__":
     unittest.main()

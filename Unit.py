@@ -5,8 +5,13 @@ from Spell import Spell
 class Unit:
 
     def __init__(self, health, mana):
+        '''
+        rename damage to attack points for
+        better understanding
+        '''
         self.health = health
         self.mana = mana
+        self.attack_points = 0
         self.current_health = health
         self.current_mana = mana
         self.has_weapon = {}
@@ -53,6 +58,10 @@ class Unit:
         if by == 'weapon':
             if 'damage' in self.has_weapon:
                 return self.has_weapon['damage']
+            else:
+                return int(self.attack_points)
         if by == 'spell':
             if 'damage' in self.has_spell:
                 return self.has_spell['damage']
+            else:
+                return self.attack_points
