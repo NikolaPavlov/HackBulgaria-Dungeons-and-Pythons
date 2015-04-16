@@ -45,6 +45,11 @@ class Unit:
     def take_mana(self):
         pass
 
+    def take_damage(self, damage_points):
+        self.current_health -= damage_points
+        if self.current_health < 0:
+            self.current_health = 0
+
     def equip(self, weapon):
         if isinstance(weapon, Weapon):
             self.has_weapon = weapon.get_properties()
