@@ -1,3 +1,7 @@
+from Weapon import Weapon
+from Spell import Spell
+
+
 class Unit:
 
     def __init__(self, health, mana):
@@ -5,6 +9,8 @@ class Unit:
         self.mana = mana
         self.current_health = health
         self.current_mana = mana
+        self.has_weapon = {}
+        self.has_spell = {}
 
     def is_alive(self):
         return self.current_health > 0
@@ -34,6 +40,19 @@ class Unit:
     def take_mana(self):
         pass
 
-    def attack(self):
-        pass
+    def equip(self, weapon):
+        if isinstance(weapon, Weapon):
+            self.has_weapon = weapon.get_properties()
 
+    def learn(self, spell):
+        if isinstance(spell, Spell):
+            self.has_spell = spell.get_properties()
+
+    # enemy can attack withowth weapon or spell
+    def attack(self, by):
+        if by == 'weapon':
+            if 'damage' in self.has_weapon:
+                return self.has_weapon['damage']
+        if by == 'spell':
+            if 'damage' in self.has_spell:
+                return self.has_spell['damage']
