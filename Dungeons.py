@@ -2,11 +2,12 @@ from Hero import Hero
 
 
 class Dungeon:
+
     def __init__(self, level="level1.txt"):
         self.level = level
         self.dungeon_map = []
         self.load_level()
-        self.hero_current_position = None
+        self.hero_yx = None
 
     def load_level(self):
         with open(self.level) as f:
@@ -22,11 +23,11 @@ class Dungeon:
         if type(hero_to_spawn) is not Hero:
             raise ThisIsNotAHero
 
-        for path_num, path in enumerate(self.dungeon_map):
-            for step_num, step in enumerate(path):
+        for path_y, path in enumerate(self.dungeon_map):
+            for step_x, step in enumerate(path):
                 if step == 'S':
-                    self.dungeon_map[path_num][step_num] = 'H'
-                    self.hero_current_position = (path_num, step_num)
+                    self.dungeon_map[path_y][step_x] = 'H'
+                    self.hero_yx = (path_y, step_x)
                     return True
         return False
 
@@ -36,43 +37,35 @@ class Dungeon:
         if direction not in possible_directions:
             raise WrongDirection
 
-        if direction == "up":
-            return self.move_up()
+        new_pos = tuple([ny + nx for ny, nx in zip(self.get_direct(direction), self.hero_yx)])
+        print(self.hero_yx)
+        print (new_pos)
+        if self.path_find(new_pos):
+            self.dungeon_map[self.hero_yx[0]][self.hero_yx[1]] = '.'
+            self.hero_yx = new_pos
+            self.dungeon_map[self.hero_yx[0]][self.hero_yx[1]] = 'H'
+            return True
 
-        elif direction == "left":
-            return self.move_left()
+    def get_direct(self, direction):
+        directions = {
+            'up': (-1, 0),
+            'down': (1, 0),
+            'right': (0, 1),
+            'left': (0, -1)
+            }
+        return directions[direction]
 
-        elif direction == "right":
-            return self.move_right()
-
-        elif direction == "down":
-            return self.move_down()
-
-    def move_up(self):
-        if self.hero_current_position[0] - 1 < 0:
+    def path_find(self, position):
+        if position[0] > len(self.dungeon_map) or position[0] < 0:
+            return False
+        if position[1] > len(self.dungeon_map[position[0]]) or position[1] < 0:
             return False
         return True
-
-    def move_down(self):
-        if self.hero_current_position[0] + 1 > len(self.dungeon_map):
-            return False
-        return True
-
-    def move_right(self):
-        num_path = self.hero_current_position[0]
-        if self.hero_current_position[1] + 1 > len(self.dungeon_map[num_path]):
-            return False
-        return True
-
-    def move_left(self):
-        if self.hero_current_position[1] - 1 < 0:
-            return False
-        return True
-
 
 
 class ThisIsNotAHero(Exception):
     pass
+
 
 class WrongDirection(Exception):
     pass

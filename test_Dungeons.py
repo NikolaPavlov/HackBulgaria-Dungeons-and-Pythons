@@ -15,7 +15,8 @@ class TestDungeons(unittest.TestCase):
 
     def test_show_map(self):
         print ("===== BEFORE ======")
-        self.outcast_land.show_map()
+        self.test_land = Dungeon()
+        self.test_land.show_map()
 
     def test_spawn(self):
         alabala = "WTF"
@@ -27,11 +28,9 @@ class TestDungeons(unittest.TestCase):
     def test_move_hero(self):
         with self.assertRaises(WrongDirection):
             self.outcast_land.move_hero("asdad")
-        self.outcast_land.spawn(self.fighter)
-        self.assertFalse(self.outcast_land.move_hero("up"), False)
-        self.assertFalse(self.outcast_land.move_hero("left"), False)
-        self.assertTrue(self.outcast_land.move_hero("down"), True)
         self.assertTrue(self.outcast_land.move_hero("right"), True)
+        print ("NEXT MOVE")
+        self.outcast_land.show_map()
 
 
 if __name__ == "__main__":
