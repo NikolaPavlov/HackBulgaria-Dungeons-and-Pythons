@@ -5,10 +5,6 @@ from Spell import Spell
 class Unit:
 
     def __init__(self, health, mana):
-        '''
-        rename damage to attack points for
-        better understanding
-        '''
         self.health = health
         self.mana = mana
         self.attack_points = 0
@@ -30,7 +26,7 @@ class Unit:
         if self.has_spell:
             return self.current_mana > self.has_spell['mana_cost']
         else:
-            print ("No Spell to cast")
+            print("No Spell to cast")
 
     def take_healing(self, healing_points):
         if self.current_health <= 0:
