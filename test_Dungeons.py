@@ -30,7 +30,7 @@ class TestDungeons(unittest.TestCase):
         with self.assertRaises(WrongDirection):
             self.outcast_land.move_hero("asdad")
         self.assertTrue(self.outcast_land.move_hero("right"), True)
-        self.assertFalse(self.outcast_land.move_hero("right"), False)
+        self.assertFalse(self.outcast_land.move_hero("up"), False)
 
     def test_update_map(self):
         self.assertTrue(self.outcast_land.move_hero("right"), True)

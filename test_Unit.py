@@ -57,7 +57,10 @@ class TestUnit(unittest.TestCase):
         self.assertEqual(self.unit1.get_health(), 0)
 
     def test_take_mana(self):
-        pass
+        self.injured_unit.learn(self.spell1)
+        self.injured_unit.attack(by='spell')
+        self.injured_unit.take_mana(20)
+        self.assertEqual(self.injured_unit.get_mana(), 20)
 
     def test_equip(self):
         self.unit1.equip(self.weapon1)

@@ -58,7 +58,12 @@ class TestHero(unittest.TestCase):
         self.assertEqual(self.injured_hero.get_health(), 100)
 
     def test_take_mana(self):
-        pass
+        self.hero1.learn(self.spell1)
+        self.hero1.attack(by='spell')
+        self.hero1.regen_mana()
+        self.assertEqual(self.hero1.get_mana(), 52)
+        self.hero1.take_mana(99)
+        self.assertEqual(self.hero1.get_mana(), 100)
 
     def test_equip(self):
         self.hero1.equip(self.weapon1)

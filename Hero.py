@@ -17,3 +17,6 @@ class Hero(Unit):
 
     def known_as(self):
         return "{} the {}".format(self.name, self.title)
+
+    def regen_mana(self):
+        super(Hero, self).take_mana(self.mana_regeneration_rate)

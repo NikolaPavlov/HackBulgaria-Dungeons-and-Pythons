@@ -27,23 +27,24 @@ class Unit:
         return self.current_mana
 
     def can_cast(self):
-        return self.current_mana > 0
+        if self.has_spell:
+            return self.current_mana > self.has_spell['mana_cost']
+        else:
+            print ("No Spell to cast")
 
     def take_healing(self, healing_points):
         if self.current_health <= 0:
             return False
-
-        # Haling to the max points
-        if self.current_health + healing_points > self.health:
-            self.current_health = self.health
-            return True
-
-        # Just heal
         self.current_health += healing_points
+        if self.current_health > self.health:
+            self.current_health = self.health
         return True
 
-    def take_mana(self):
-        pass
+    def take_mana(self, mana_points=0):
+        self.current_mana += mana_points
+        if self.current_mana > self.mana:
+            self.current_mana = self.mana
+        return True
 
     def take_damage(self, damage_points):
         self.current_health -= damage_points
@@ -67,6 +68,7 @@ class Unit:
                 return int(self.attack_points)
         if by == 'spell':
             if 'damage' in self.has_spell:
+                self.current_mana -= self.has_spell['mana_cost']
                 return self.has_spell['damage']
             else:
                 return self.attack_points
