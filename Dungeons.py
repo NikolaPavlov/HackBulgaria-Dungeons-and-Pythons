@@ -34,16 +34,18 @@ class Dungeon:
     def move_hero(self, direction):
         possible_directions = set(["up", "down", "left", "right"])
 
+        if not self.hero_yx:
+            raise NoHeroOnTheMap
+
         if direction not in possible_directions:
             raise WrongDirection
 
         new_pos = tuple([ny + nx for ny, nx in zip(self.get_direct(direction), self.hero_yx)])
         print(self.hero_yx)
         print (new_pos)
+
         if self.path_find(new_pos):
-            self.dungeon_map[self.hero_yx[0]][self.hero_yx[1]] = '.'
-            self.hero_yx = new_pos
-            self.dungeon_map[self.hero_yx[0]][self.hero_yx[1]] = 'H'
+            self.update_map(new_pos)
             return True
 
     def get_direct(self, direction):
@@ -52,14 +54,27 @@ class Dungeon:
             'down': (1, 0),
             'right': (0, 1),
             'left': (0, -1)
-            }
+        }
         return directions[direction]
 
     def path_find(self, position):
-        if position[0] > len(self.dungeon_map) or position[0] < 0:
+        xh = position[1]
+        yh = position[0]
+        Y = len(self.dungeon_map)
+        X = len(self.dungeon_map[yh])
+
+        if not (-1 < xh <= X and -1 < yh <= Y):
             return False
-        if position[1] > len(self.dungeon_map[position[0]]) or position[1] < 0:
+
+        elif self.dungeon_map[yh][xh] == '#':
             return False
+
+        return True
+
+    def update_map(self, position):
+        self.dungeon_map[self.hero_yx[0]][self.hero_yx[1]] = '.'
+        self.hero_yx = position
+        self.dungeon_map[self.hero_yx[0]][self.hero_yx[1]] = 'H'
         return True
 
 
@@ -68,4 +83,7 @@ class ThisIsNotAHero(Exception):
 
 
 class WrongDirection(Exception):
+    pass
+
+class NoHeroOnTheMap(Exception):
     pass
