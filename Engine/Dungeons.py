@@ -130,10 +130,37 @@ class Dungeon:
         pass
 
     def hero_attack(self, by):
+        hit_up_wall = False
+        hit_down_wall = False
+        hit_left_wall = False
+        hit_right_wall = False
+
         if by == 'spell' and self.hero.has_spell:
             for enemy_dist in range(1, self.hero.has_spell['cast_range']+1):
-                print(enemy_dist)
+                enemy_up = tuple([ny + nx for ny, nx in zip((-enemy_dist, 0), self.hero_yx)])
+                enemy_down = tuple([ny + nx for ny, nx in zip((enemy_dist, 0), self.hero_yx)])
+                enemy_left = tuple([ny + nx for ny, nx in zip((0, -enemy_dist), self.hero_yx)])
+                enemy_right = tuple([ny + nx for ny, nx in zip((0, enemy_dist), self.hero_yx)])
 
+                if self.path_find(enemy_up) and self.dungeon_map[enemy_up[0]][enemy_up[1]] == '#':
+                    hit_up_wall = True
+                elif self.path_find(enemy_up) and self.dungeon_map[enemy_up[0]][enemy_up[1]] == 'E' and not hit_up_wall:
+                    print('There is an Enemy at {}'.format(enemy_up))
+
+                if self.path_find(enemy_down) and self.dungeon_map[enemy_down[0]][enemy_down[1]] == '#':
+                    hit_down_wall = True
+                elif self.path_find(enemy_down) and self.dungeon_map[enemy_down[0]][enemy_down[1]] == 'E' and not hit_down_wall:
+                    print('There is an Enemy at {}'.format(enemy_down))
+
+                if self.path_find(enemy_left) and self.dungeon_map[enemy_left[0]][enemy_left[1]] == '#':
+                    hit_left_wall = True
+                elif self.path_find(enemy_left) and self.dungeon_map[enemy_left[0]][enemy_left[1]] == 'E' and not hit_left_wall:
+                    print('There is an Enemy at {}'.format(enemy_left))
+
+                if self.path_find(enemy_right) and self.dungeon_map[enemy_right[0]][enemy_right[1]] == '#':
+                    hit_right_wall = True
+                elif self.path_find(enemy_right) and self.dungeon_map[enemy_right[0]][enemy_right[1]] == 'E' and not hit_right_wall:
+                    print('There is an Enemy at {}'.format(enemy_right))
 
 class ThisIsNotAHero(Exception):
     pass
