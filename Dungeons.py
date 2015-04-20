@@ -12,7 +12,7 @@ class Dungeon:
     def load_level(self):
         with open(self.level) as f:
             for line in f:
-                self.dungeon_map.append(line.strip().split(','))
+                self.dungeon_map.append(list(line.strip()))
 
     def show_map(self):
         for map_path in self.dungeon_map:
@@ -45,7 +45,7 @@ class Dungeon:
         new_y = new_pos[0]
         new_x = new_pos[1]
         print(self.hero_yx)
-        print (new_pos)
+        print(new_pos)
 
         if self.path_find(new_pos):
             if self.dungeon_map[new_y][new_x] == '.':
@@ -54,16 +54,16 @@ class Dungeon:
 
             elif self.dungeon_map[new_y][new_x] == 'T':
                 self.pick_treasure()
-                print ("You Found a Trasure!!!")
+                print("You Found a Trasure!!!")
                 self.update_map(new_pos)
                 self.hero.regen_mana()
 
             elif self.dungeon_map[new_y][new_x] == 'E':
                 self.start_fight()
-                print ("You Started a Fight with an Enemy")
+                print("You Started a Fight with an Enemy")
 
             elif self.dungeon_map[new_y][new_x] == 'G':
-                print ("You reached the Gate to the next Dungeon")
+                print("You reached the Gate to the next Dungeon")
 
             return True
 
@@ -109,6 +109,7 @@ class ThisIsNotAHero(Exception):
 
 class WrongDirection(Exception):
     pass
+
 
 class NoHeroOnTheMap(Exception):
     pass
