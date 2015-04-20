@@ -15,16 +15,17 @@ class Dungeon:
     HERO = "H"
     POSSIBLE_DIRECTIONS = set(["up", "down", "left", "right"])
 
-    def __init__(self, level="../resources/level1.txt"):
-        self.level = level
-        self.dungeon_map = []
-        self.load_level()
-        self.hero_position = None
+    @staticmethod
+    def load_level(level_path="../resources/level1.txt"):
+        with open(level_path) as f:
+            contents = f.read().split("\n")
+            dungeon_lvl = [list(line) for line in contents if line.strip() != ""]
 
-    def load_level(self):
-        with open(self.level) as f:
-            for line in f:
-                self.dungeon_map.append(list(line.strip()))
+        return Dungeon(dungeon_lvl)
+
+    def __init__(self, dung_map):
+        self.dungeon_map = dung_map
+        self.hero_position = None
 
     def show_map(self):
         for map_path in self.dungeon_map:
