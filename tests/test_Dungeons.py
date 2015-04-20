@@ -4,6 +4,7 @@ sys.path.insert(0, '../Engine')
 sys.path.insert(0, '../resources')
 from Dungeons import Dungeon, ThisIsNotAHero, WrongDirection
 from Hero import Hero
+from Spell import Spell
 
 
 class TestDungeons(unittest.TestCase):
@@ -43,11 +44,14 @@ class TestDungeons(unittest.TestCase):
         self.assertTrue(self.outcast_land.move_hero("right"))
         self.assertTrue(self.outcast_land.move_hero("down"))
 
-    def test_move_hero_right_once_down_three(self):
+    def test_move_hero_right_and_find_enemy(self):
         self.assertTrue(self.outcast_land.move_hero("right"))
         self.assertTrue(self.outcast_land.move_hero("down"))
         self.assertTrue(self.outcast_land.move_hero("down"))
         self.assertTrue(self.outcast_land.move_hero("down"))
+        self.outcast_land.show_map()
+        self.fighter.learn(Spell())
+        self.assertTrue(self.outcast_land.hero_attack(by='spell'))
 
     def test_move_hero_right_once_hit_bottom_wall(self):
         self.assertTrue(self.outcast_land.move_hero("right"))

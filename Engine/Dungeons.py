@@ -6,12 +6,20 @@ import random
 
 
 class Dungeon:
+    WALL = "#"
+    SPAWNING_POINT = "S"
+    ENEMY = "E"
+    EXIT = "G"
+    TREASURE = "T"
+    WALKABLE_PATH = "."
+    HERO = "H"
+    POSSIBLE_DIRECTIONS = set(["up", "down", "left", "right"])
 
     def __init__(self, level="../resources/level1.txt"):
         self.level = level
         self.dungeon_map = []
         self.load_level()
-        self.hero_yx = None
+        self.hero_position = None
 
     def load_level(self):
         with open(self.level) as f:
@@ -27,43 +35,42 @@ class Dungeon:
         if type(hero_to_spawn) is not Hero:
             raise ThisIsNotAHero
 
-        for path_y, path in enumerate(self.dungeon_map):
-            for step_x, step in enumerate(path):
-                if step == 'S':
-                    self.dungeon_map[path_y][step_x] = 'H'
-                    self.hero_yx = (path_y, step_x)
+        for cuurent_row, row in enumerate(self.dungeon_map):
+            for current_col, col in enumerate(row):
+                if col == Dungeon.SPAWNING_POINT:
+                    self.dungeon_map[cuurent_row][current_col] = Dungeon.HERO
+                    self.hero_position = (cuurent_row, current_col)
                     self.hero = hero_to_spawn
                     return True
         return False
 
     def move_hero(self, direction):
-        possible_directions = set(["up", "down", "left", "right"])
 
-        if not self.hero_yx:
+        if not self.hero_position:
             raise NoHeroOnTheMap
 
-        if direction not in possible_directions:
+        if direction not in Dungeon.POSSIBLE_DIRECTIONS:
             raise WrongDirection
 
-        new_pos = tuple([ny + nx for ny, nx in zip(self.get_direct(direction), self.hero_yx)])
-        new_y = new_pos[0]
-        new_x = new_pos[1]
-        # print(self.hero_yx)  Debugg Prints
-        # print(new_pos)       Debugg Prints
+        future_position = tuple([ny + nx for ny, nx in zip(self.get_direct(direction), self.hero_position)])
+        future_row = future_position[0]
+        future_col = future_position[1]
+        # print(self.hero_position)  Debugg Prints
+        # print(future_position)       Debugg Prints
 
-        if self.path_find(new_pos):
-            if self.dungeon_map[new_y][new_x] == '.':
-                self.update_map(new_pos)
+        if self.path_find(future_position):
+            if self.dungeon_map[future_row][future_col] == Dungeon.WALKABLE_PATH:
+                self.update_map(future_position)
 
-            elif self.dungeon_map[new_y][new_x] == 'T':
+            elif self.dungeon_map[future_row][future_col] == Dungeon.TREASURE:
                 self.pick_treasure()
-                self.update_map(new_pos)
+                self.update_map(future_position)
 
-            elif self.dungeon_map[new_y][new_x] == 'E':
+            elif self.dungeon_map[future_row][future_col] == Dungeon.ENEMY:
                 self.start_fight()
                 print("You Started a Fight with an Enemy")
 
-            elif self.dungeon_map[new_y][new_x] == 'G':
+            elif self.dungeon_map[future_row][future_col] == Dungeon.EXIT:
                 print("You reached the Gate to the next Dungeon")
 
             return True
@@ -86,15 +93,15 @@ class Dungeon:
         if not (-1 < xh <= X and -1 < yh <= Y):
             return False
 
-        elif self.dungeon_map[yh][xh] == '#':
+        elif self.dungeon_map[yh][xh] == Dungeon.WALL:
             return False
 
         return True
 
     def update_map(self, position):
-        self.dungeon_map[self.hero_yx[0]][self.hero_yx[1]] = '.'
-        self.hero_yx = position
-        self.dungeon_map[self.hero_yx[0]][self.hero_yx[1]] = 'H'
+        self.dungeon_map[self.hero_position[0]][self.hero_position[1]] = Dungeon.WALKABLE_PATH
+        self.hero_position = position
+        self.dungeon_map[self.hero_position[0]][self.hero_position[1]] = Dungeon.HERO
         self.hero.regen_mana()
         return True
 
@@ -130,37 +137,24 @@ class Dungeon:
         pass
 
     def hero_attack(self, by):
-        hit_up_wall = False
-        hit_down_wall = False
-        hit_left_wall = False
-        hit_right_wall = False
-
         if by == 'spell' and self.hero.has_spell:
-            for enemy_dist in range(1, self.hero.has_spell['cast_range']+1):
-                enemy_up = tuple([ny + nx for ny, nx in zip((-enemy_dist, 0), self.hero_yx)])
-                enemy_down = tuple([ny + nx for ny, nx in zip((enemy_dist, 0), self.hero_yx)])
-                enemy_left = tuple([ny + nx for ny, nx in zip((0, -enemy_dist), self.hero_yx)])
-                enemy_right = tuple([ny + nx for ny, nx in zip((0, enemy_dist), self.hero_yx)])
+            spell_range = self.hero.has_spell['cast_range']
+            if self.find_enemy_in_range(spell_range):
+                return True
 
-                if self.path_find(enemy_up) and self.dungeon_map[enemy_up[0]][enemy_up[1]] == '#':
-                    hit_up_wall = True
-                elif self.path_find(enemy_up) and self.dungeon_map[enemy_up[0]][enemy_up[1]] == 'E' and not hit_up_wall:
-                    print('There is an Enemy at {}'.format(enemy_up))
 
-                if self.path_find(enemy_down) and self.dungeon_map[enemy_down[0]][enemy_down[1]] == '#':
-                    hit_down_wall = True
-                elif self.path_find(enemy_down) and self.dungeon_map[enemy_down[0]][enemy_down[1]] == 'E' and not hit_down_wall:
-                    print('There is an Enemy at {}'.format(enemy_down))
+    def find_enemy_in_range(self, attack_range):
+            for direction in Dungeon.POSSIBLE_DIRECTIONS:
+                enemy_possition = self.hero_position
+                for incr_range in range(attack_range):
+                    enemy_possition = tuple([ny + nx for ny, nx in zip(self.get_direct(direction), enemy_possition)])
+                    if self.path_find(enemy_possition):
+                        if self.dungeon_map[enemy_possition[0]][enemy_possition[1]] == Dungeon.ENEMY:
+                            return enemy_possition
+                    else:
+                        break
+            return False
 
-                if self.path_find(enemy_left) and self.dungeon_map[enemy_left[0]][enemy_left[1]] == '#':
-                    hit_left_wall = True
-                elif self.path_find(enemy_left) and self.dungeon_map[enemy_left[0]][enemy_left[1]] == 'E' and not hit_left_wall:
-                    print('There is an Enemy at {}'.format(enemy_left))
-
-                if self.path_find(enemy_right) and self.dungeon_map[enemy_right[0]][enemy_right[1]] == '#':
-                    hit_right_wall = True
-                elif self.path_find(enemy_right) and self.dungeon_map[enemy_right[0]][enemy_right[1]] == 'E' and not hit_right_wall:
-                    print('There is an Enemy at {}'.format(enemy_right))
 
 class ThisIsNotAHero(Exception):
     pass
