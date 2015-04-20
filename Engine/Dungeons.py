@@ -7,7 +7,7 @@ import random
 
 class Dungeon:
 
-    def __init__(self, level="level1.txt"):
+    def __init__(self, level="../resources/level1.txt"):
         self.level = level
         self.dungeon_map = []
         self.load_level()
@@ -101,7 +101,7 @@ class Dungeon:
     def pick_treasure(self):
         self.treasure_chest = {}
 
-        with open('treasures.json', 'r') as fp:
+        with open('../resources/treasures.json', 'r') as fp:
             self.treasure_chest = json.load(fp)
 
         treasure = random.choice(list(self.treasure_chest.keys()))

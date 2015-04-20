@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, '../Engine')
+sys.path.insert(0, '../resources')
 import unittest
 from Dungeons import Dungeon, ThisIsNotAHero, WrongDirection
 from Hero import Hero

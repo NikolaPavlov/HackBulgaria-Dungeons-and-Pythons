@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, '../Engine')
 import unittest
 from Unit import Unit
 from Weapon import Weapon

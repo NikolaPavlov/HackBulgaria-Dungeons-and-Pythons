@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, '../Engine')
 import unittest
 
 from Enemy import Enemy
