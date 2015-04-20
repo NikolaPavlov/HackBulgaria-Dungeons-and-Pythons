@@ -1,6 +1,7 @@
 from Hero import Hero
 from Spell import Spell
 from Weapon import Weapon
+from Fight import Fight
 import json
 import random
 
@@ -138,11 +139,12 @@ class Dungeon:
         pass
 
     def hero_attack(self, by):
-        if by == 'spell' and self.hero.has_spell:
-            spell_range = self.hero.has_spell['cast_range']
-            if self.find_enemy_in_range(spell_range):
+        attack_type = {'spell': self.hero.has_spell['cast_range'], 'weapon': 1}
+        if (by == 'spell' and self.hero.has_spell) or by == 'weapon':
+            attack_range = attack_type[by]
+            if self.find_enemy_in_range(attack_range):
                 return True
-
+        return False
 
     def find_enemy_in_range(self, attack_range):
             for direction in Dungeon.POSSIBLE_DIRECTIONS:
