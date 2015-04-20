@@ -1,4 +1,8 @@
 from Hero import Hero
+from Spell import Spell
+from Weapon import Weapon
+import json
+import random
 
 
 class Dungeon:
@@ -44,19 +48,16 @@ class Dungeon:
         new_pos = tuple([ny + nx for ny, nx in zip(self.get_direct(direction), self.hero_yx)])
         new_y = new_pos[0]
         new_x = new_pos[1]
-        print(self.hero_yx)
-        print(new_pos)
+        # print(self.hero_yx)  Debugg Prints
+        # print(new_pos)       Debugg Prints
 
         if self.path_find(new_pos):
             if self.dungeon_map[new_y][new_x] == '.':
                 self.update_map(new_pos)
-                self.hero.regen_mana()
 
             elif self.dungeon_map[new_y][new_x] == 'T':
                 self.pick_treasure()
-                print("You Found a Trasure!!!")
                 self.update_map(new_pos)
-                self.hero.regen_mana()
 
             elif self.dungeon_map[new_y][new_x] == 'E':
                 self.start_fight()
@@ -94,10 +95,36 @@ class Dungeon:
         self.dungeon_map[self.hero_yx[0]][self.hero_yx[1]] = '.'
         self.hero_yx = position
         self.dungeon_map[self.hero_yx[0]][self.hero_yx[1]] = 'H'
+        self.hero.regen_mana()
         return True
 
     def pick_treasure(self):
-        pass
+        self.treasure_chest = {}
+
+        with open('treasures.json', 'r') as fp:
+            self.treasure_chest = json.load(fp)
+
+        treasure = random.choice(list(self.treasure_chest.keys()))
+        item = random.choice(self.treasure_chest[treasure])
+        print("{} Found a {} chest!!!".format(self.hero.name, treasure))
+
+        if treasure == 'mana':
+            self.hero.take_mana(item)
+            print("{} + {} {}".format(self.hero.name, item, treasure))
+
+        elif treasure == 'health':
+            self.hero.take_healing(item)
+            print("{} + {} {}".format(self.hero.name, item, treasure))
+
+        elif treasure == 'weapons':
+            weapon = eval(item)
+            self.hero.equip(weapon)
+            print("{} has equipped {}".format(self.hero.name, weapon.name))
+
+        elif treasure == 'spells':
+            spell = eval(item)
+            self.hero.learn(spell)
+            print("{} has learned {}".format(self.hero.name, spell.name))
 
     def start_fight(self):
         pass

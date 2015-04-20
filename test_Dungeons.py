@@ -7,7 +7,7 @@ class TestDungeons(unittest.TestCase):
 
     def setUp(self):
         self.outcast_land = Dungeon()
-        self.fighter = Hero()
+        self.fighter = Hero(name='Centaur', title='Warrunner')
         self.outcast_land.spawn(self.fighter)
 
     def test_loading_map(self):
@@ -60,8 +60,6 @@ class TestDungeons(unittest.TestCase):
         self.assertTrue(self.outcast_land.move_hero("down"))
         self.assertTrue(self.outcast_land.move_hero("right"))
         # self.outcast_land.show_map()
-
-
 
     def test_update_map(self):
         self.assertTrue(self.outcast_land.move_hero("right"), True)
