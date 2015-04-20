@@ -63,9 +63,10 @@ class Unit:
                 return self.has_weapon['damage']
             else:
                 return int(self.attack_points)
+
         if by == 'spell':
             if 'damage' in self.has_spell:
                 self.current_mana -= self.has_spell['mana_cost']
                 return self.has_spell['damage']
             else:
-                return self.attack_points
+                return int(self.attack_points)

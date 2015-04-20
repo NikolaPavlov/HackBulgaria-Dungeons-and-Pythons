@@ -17,7 +17,7 @@ class TestDungeons(unittest.TestCase):
     def test_show_map(self):
         # print("===== BEFORE RESP======")
         self.test_land = Dungeon()
-        # self.test_land.show_map()
+        self.test_land.show_map()
 
     def test_spawn(self):
         alabala = "WTF"

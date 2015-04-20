@@ -129,6 +129,11 @@ class Dungeon:
     def start_fight(self):
         pass
 
+    def hero_attack(self, by):
+        if by == 'spell' and self.hero.has_spell:
+            for enemy_dist in range(1, self.hero.has_spell['cast_range']+1):
+                print(enemy_dist)
+
 
 class ThisIsNotAHero(Exception):
     pass
