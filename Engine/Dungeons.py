@@ -29,8 +29,10 @@ class Dungeon:
         self.hero_position = None
 
     def show_map(self):
-        for map_path in self.dungeon_map:
-            print(''.join(map_path))
+        return self.__str__()
+
+    def __str__(self):
+        return "\n".join(["".join(line) for line in self.dungeon_map])
 
     def spawn(self, hero_to_spawn):
 

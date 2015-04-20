@@ -21,7 +21,7 @@ class TestDungeons(unittest.TestCase):
     def test_show_map(self):
         # print("===== BEFORE RESP======")
         self.test_land = Dungeon.load_level()
-        self.test_land.show_map()
+        print(self.test_land)
 
     def test_spawn(self):
         alabala = "WTF"
@@ -49,7 +49,7 @@ class TestDungeons(unittest.TestCase):
         self.assertTrue(self.outcast_land.move_hero("down"))
         self.assertTrue(self.outcast_land.move_hero("down"))
         self.assertTrue(self.outcast_land.move_hero("down"))
-        self.outcast_land.show_map()
+        print(self.outcast_land.show_map())
         self.fighter.learn(Spell())
         self.assertTrue(self.outcast_land.hero_attack(by='spell'))
 
