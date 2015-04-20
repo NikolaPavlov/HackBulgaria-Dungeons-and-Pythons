@@ -5,10 +5,10 @@ from Spell import Spell
 class Unit:
 
     def __init__(self, health, mana):
-        self.health = health
+        self.max_health = health
         self.mana = mana
         self.attack_points = 0
-        self.current_health = health
+        self.current_health = self.max_health
         self.current_mana = mana
         self.has_weapon = {}
         self.has_spell = {}
@@ -33,8 +33,8 @@ class Unit:
         if self.current_health <= 0:
             return False
         self.current_health += healing_points
-        if self.current_health > self.health:
-            self.current_health = self.health
+        if self.current_health > self.max_health:
+            self.current_health = self.max_health
         return True
 
     def take_mana(self, mana_points=0):
