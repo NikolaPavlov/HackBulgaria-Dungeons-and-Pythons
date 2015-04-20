@@ -26,12 +26,8 @@ class Unit:
         if self.has_spell:
             return self.current_mana > self.has_spell['mana_cost']
         else:
-<<<<<<< HEAD
-            print ("No Spell to cast")
-            return False
-=======
             print("No Spell to cast")
->>>>>>> f6884765de586c8e62400b89ade9cc0c2cf022a8
+            return False
 
     def take_healing(self, healing_points):
         if self.current_health <= 0:

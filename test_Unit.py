@@ -29,9 +29,11 @@ class TestUnit(unittest.TestCase):
         self.assertEqual(self.unit1.get_mana(), 100)
 
     def test_can_cast(self):
+        self.unit1.learn(self.spell1)
         self.assertTrue(self.unit1.can_cast())
 
     def test_can_cast_false(self):
+        self.dead_unit.learn(self.spell1)
         self.assertFalse(self.dead_unit.can_cast())
 
     def test_take_healing(self):
