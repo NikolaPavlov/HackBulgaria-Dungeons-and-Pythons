@@ -24,7 +24,7 @@ class Unit:
 
     def can_cast(self):
         if self.has_spell:
-            return self.current_mana > self.has_spell['mana_cost']
+            return self.current_mana >= self.has_spell['mana_cost']
         else:
             print("No Spell to cast")
             return False

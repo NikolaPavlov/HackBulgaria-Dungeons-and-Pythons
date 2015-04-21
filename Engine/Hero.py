@@ -15,6 +15,9 @@ class Hero(Unit):
         self.title = title
         self.mana_regeneration_rate = mana_regeneration_rate
 
+    def __repr__(self):
+        return '{} with {}/{} health/mana'.format(Hero.__name__, self.current_health, self.current_mana)
+
     def known_as(self):
         return "{} the {}".format(self.name, self.title)
 

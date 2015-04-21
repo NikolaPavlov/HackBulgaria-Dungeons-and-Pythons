@@ -11,7 +11,7 @@ class TestDungeons(unittest.TestCase):
 
     def setUp(self):
         self.outcast_land = Dungeon.load_level()
-        self.fighter = Hero(name='Centaur', title='Warrunner')
+        self.fighter = Hero(mana=5, name='Centaur', title='Warrunner')
         self.outcast_land.spawn(self.fighter)
 
     def test_loading_map(self):
@@ -52,7 +52,7 @@ class TestDungeons(unittest.TestCase):
         self.assertTrue(self.outcast_land.move_hero("down"))
         self.assertTrue(self.outcast_land.move_hero("down"))
         print(self.outcast_land.show_map())
-        self.fighter.learn(Spell())
+        self.fighter.learn(Spell(mana_cost=5))
         self.assertTrue(self.outcast_land.hero_attack(by='spell'))
 
     def test_move_hero_right_once_hit_bottom_wall(self):
