@@ -28,6 +28,7 @@ class Dungeon:
         self.dungeon_map = dung_map
         self.hero_position = None
         self.enemy_possition = None
+        self.spawning_points = self.find_spawining_points()
 
     def show_map(self):
         return self.__str__()
@@ -40,14 +41,20 @@ class Dungeon:
         if type(hero_to_spawn) is not Hero:
             raise ThisIsNotAHero
 
+        if len(self.spawning_points) == 0:
+            raise NoMoreSpawnPoints
+
+        self.hero = hero_to_spawn
+        self.hero_position = self.spawning_points.pop(0)
+        self.dungeon_map[self.hero_position[0]][self.hero_position[1]] = Dungeon.HERO
+
+    def find_spawining_points(self):
+        spawn_points = []
         for cuurent_row, row in enumerate(self.dungeon_map):
             for current_col, col in enumerate(row):
                 if col == Dungeon.SPAWNING_POINT:
-                    self.dungeon_map[cuurent_row][current_col] = Dungeon.HERO
-                    self.hero_position = (cuurent_row, current_col)
-                    self.hero = hero_to_spawn
-                    return True
-        return False
+                    spawn_points.append((cuurent_row, current_col))
+        return spawn_points
 
     def move_hero(self, direction):
 
@@ -57,9 +64,10 @@ class Dungeon:
         if direction not in Dungeon.POSSIBLE_DIRECTIONS:
             raise WrongDirection
 
-        future_position = tuple([ny + nx for ny, nx in zip(self.get_direct(direction), self.hero_position)])
-        future_row = future_position[0]
-        future_col = future_position[1]
+        dy, dx = self.get_direct(direction)
+        hero_y, hero_x = self.hero_position
+        future_position = (hero_y + dy, hero_x + dx)
+        future_row, future_col = future_position
         # print(self.hero_position)  Debugg Prints
         # print(future_position)       Debugg Prints
 
@@ -138,7 +146,7 @@ class Dungeon:
             return ("{} has learned {}".format(self.hero.name, spell.name))
 
     def start_fight(self):
-        battle = Fight(self.hero, self.hero_position, )
+        battle = Fight(self.hero, self.hero_position)
 
     def hero_attack(self, by):
         attack_type = {'spell': self.hero.has_spell['cast_range'], 'weapon': 1}
@@ -152,7 +160,9 @@ class Dungeon:
             for direction in Dungeon.POSSIBLE_DIRECTIONS:
                 self.enemy_possition = self.hero_position
                 for incr_range in range(attack_range):
-                    self.enemy_possition = tuple([ny + nx for ny, nx in zip(self.get_direct(direction), self.enemy_possition)])
+                    dy, dx = self.get_direct(direction)
+                    enemy_y, enemy_x = self.enemy_possition
+                    self.enemy_possition = (enemy_y + dy, enemy_x + dx)
                     if self.path_find(self.enemy_possition):
                         if self.dungeon_map[self.enemy_possition[0]][self.enemy_possition[1]] == Dungeon.ENEMY:
                             return self.enemy_possition
@@ -164,6 +174,8 @@ class Dungeon:
 class ThisIsNotAHero(Exception):
     pass
 
+class NoMoreSpawnPoints(Exception):
+    pass
 
 class WrongDirection(Exception):
     pass

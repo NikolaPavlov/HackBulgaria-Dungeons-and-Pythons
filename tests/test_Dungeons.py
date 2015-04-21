@@ -2,7 +2,7 @@ import sys
 import unittest
 sys.path.insert(0, '../Engine')
 sys.path.insert(0, '../resources')
-from Dungeons import Dungeon, ThisIsNotAHero, WrongDirection
+from Dungeons import Dungeon, ThisIsNotAHero, WrongDirection, NoMoreSpawnPoints
 from Hero import Hero
 from Spell import Spell
 
@@ -28,7 +28,9 @@ class TestDungeons(unittest.TestCase):
         with self.assertRaises(ThisIsNotAHero):
             self.outcast_land.spawn(alabala)
         # print("==== AFTER RESP =====")
-        # self.outcast_land.show_map()
+        print(self.outcast_land.show_map())
+        with self.assertRaises(NoMoreSpawnPoints):
+            self.outcast_land.spawn(self.fighter)
 
     def test_move_hero_right_once(self):
         with self.assertRaises(WrongDirection):
