@@ -27,6 +27,7 @@ class Dungeon:
     def __init__(self, dung_map):
         self.dungeon_map = dung_map
         self.hero_position = None
+        self.enemy_possition = None
 
     def show_map(self):
         return self.__str__()
@@ -64,11 +65,11 @@ class Dungeon:
 
         if self.path_find(future_position):
             if self.dungeon_map[future_row][future_col] == Dungeon.WALKABLE_PATH:
-                self.update_map(future_position)
+                self.make_move(future_position)
 
             elif self.dungeon_map[future_row][future_col] == Dungeon.TREASURE:
-                self.pick_treasure()
-                self.update_map(future_position)
+                self.make_move(future_position)
+                print('Treasure found: ', self.pick_treasure())
 
             elif self.dungeon_map[future_row][future_col] == Dungeon.ENEMY:
                 self.start_fight()
@@ -102,7 +103,7 @@ class Dungeon:
 
         return True
 
-    def update_map(self, position):
+    def make_move(self, position):
         self.dungeon_map[self.hero_position[0]][self.hero_position[1]] = Dungeon.WALKABLE_PATH
         self.hero_position = position
         self.dungeon_map[self.hero_position[0]][self.hero_position[1]] = Dungeon.HERO
@@ -117,28 +118,27 @@ class Dungeon:
 
         treasure = random.choice(list(self.treasure_chest.keys()))
         item = random.choice(self.treasure_chest[treasure])
-        print("{} Found a {} chest!!!".format(self.hero.name, treasure))
 
         if treasure == 'mana':
             self.hero.take_mana(item)
-            print("{} + {} {}".format(self.hero.name, item, treasure))
+            return ("{} + {} {}".format(self.hero.name, item, treasure))
 
         elif treasure == 'health':
             self.hero.take_healing(item)
-            print("{} + {} {}".format(self.hero.name, item, treasure))
+            return ("{} + {} {}".format(self.hero.name, item, treasure))
 
         elif treasure == 'weapons':
             weapon = eval(item)
             self.hero.equip(weapon)
-            print("{} has equipped {}".format(self.hero.name, weapon.name))
+            return ("{} has equipped {}".format(self.hero.name, weapon.name))
 
         elif treasure == 'spells':
             spell = eval(item)
             self.hero.learn(spell)
-            print("{} has learned {}".format(self.hero.name, spell.name))
+            return ("{} has learned {}".format(self.hero.name, spell.name))
 
     def start_fight(self):
-        pass
+        battle = Fight(self.hero, self.hero_position, )
 
     def hero_attack(self, by):
         attack_type = {'spell': self.hero.has_spell['cast_range'], 'weapon': 1}
@@ -150,12 +150,12 @@ class Dungeon:
 
     def find_enemy_in_range(self, attack_range):
             for direction in Dungeon.POSSIBLE_DIRECTIONS:
-                enemy_possition = self.hero_position
+                self.enemy_possition = self.hero_position
                 for incr_range in range(attack_range):
-                    enemy_possition = tuple([ny + nx for ny, nx in zip(self.get_direct(direction), enemy_possition)])
-                    if self.path_find(enemy_possition):
-                        if self.dungeon_map[enemy_possition[0]][enemy_possition[1]] == Dungeon.ENEMY:
-                            return enemy_possition
+                    self.enemy_possition = tuple([ny + nx for ny, nx in zip(self.get_direct(direction), self.enemy_possition)])
+                    if self.path_find(self.enemy_possition):
+                        if self.dungeon_map[self.enemy_possition[0]][self.enemy_possition[1]] == Dungeon.ENEMY:
+                            return self.enemy_possition
                     else:
                         break
             return False
