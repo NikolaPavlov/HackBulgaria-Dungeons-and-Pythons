@@ -30,6 +30,7 @@ class TestEnemy(unittest.TestCase):
         self.assertFalse(self.dead_enemy.is_alive())
 
     def test_can_cast(self):
+        self.enemy1.learn(self.spell1)
         self.assertTrue(self.enemy1.can_cast())
 
     def test_can_cast_false(self):
@@ -66,7 +67,7 @@ class TestEnemy(unittest.TestCase):
         self.assertEqual(self.enemy1.attack(by='spell'), 30)
 
     def test_attack_with_no_weapon_no_spell(self):
-        self.assertEqual(self.enemy1.attack(by='weapon'), 20)
+        self.assertEqual(self.enemy1.attack(by='weapon'), 0)
 
 
 if __name__ == "__main__":

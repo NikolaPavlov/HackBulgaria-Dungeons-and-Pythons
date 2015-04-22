@@ -10,7 +10,7 @@ class Unit:
         self.attack_points = 0
         self.current_health = self.max_health
         self.current_mana = mana
-        self.has_weapon = {'name': 'Fist', 'damage': 0}
+        self.has_weapon = {'name': 'Basic Attack', 'damage': 0}
         self.has_spell = {}
 
     def is_alive(self):

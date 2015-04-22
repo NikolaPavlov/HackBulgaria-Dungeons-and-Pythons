@@ -5,7 +5,7 @@ class Fight:
     COMBATLOG1 = 'Hero hit the enemy with {}-{} for {} dmg!'
     COMBATLOG2 = 'Enemy moves one step to the {} in order to get to the hero. This is his move!'
     COMBATLOG3 = 'Hero have no mana to cast the spell or weapon has not enough range to atack the enemy. Standing still!'
-    COMBATLOG4 = 'Enemy hit the Hero with fist for {} dmg!'
+    COMBATLOG4 = 'Enemy hit the Hero with fists for {} dmg!'
     COMBATLOG5 = 'Hero killed the enemy. Enemy is DEAD!!!'
     COMBATLOG6 = '{} current health {}!'
     COMBATLOG7 = 'Enemy killed the Hero. Hero is DEAD!!!'
