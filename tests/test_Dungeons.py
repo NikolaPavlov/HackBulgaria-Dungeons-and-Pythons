@@ -12,7 +12,13 @@ class TestDungeons(unittest.TestCase):
 
     def setUp(self):
         self.outcast_land = Dungeon.load_level()
+<<<<<<< HEAD
         self.fighter = Hero(mana=62, name='Centaur', title='Warrunner')
+=======
+        self.fighter = Hero(mana=5, name='Centaur', title='Warrunner')
+        self.fighter_spell = Spell(mana_cost=1)
+        self.fighter.learn(self.fighter_spell)
+>>>>>>> 9fdb57026b8ed38ba952c56a6a5d99ce46b14fa7
         self.outcast_land.spawn(self.fighter)
 
     def test_loading_map(self):
@@ -22,14 +28,14 @@ class TestDungeons(unittest.TestCase):
     def test_show_map(self):
         # print("===== BEFORE RESP======")
         self.test_land = Dungeon.load_level()
-        print(self.test_land)
+        # print(self.test_land)
 
     def test_spawn(self):
         alabala = "WTF"
         with self.assertRaises(ThisIsNotAHero):
             self.outcast_land.spawn(alabala)
         # print("==== AFTER RESP =====")
-        print(self.outcast_land.show_map())
+        # print(self.outcast_land.show_map())
         with self.assertRaises(NoMoreSpawnPoints):
             self.outcast_land.spawn(self.fighter)
 
@@ -47,13 +53,24 @@ class TestDungeons(unittest.TestCase):
         self.assertTrue(self.outcast_land.move_hero("right"))
         self.assertTrue(self.outcast_land.move_hero("down"))
 
+    def test_hero_start_fight_no_enemy_in_line(self):
+        self.assertTrue(self.outcast_land.move_hero("right"))
+        self.assertTrue(self.outcast_land.move_hero("down"))
+        # print(self.outcast_land.show_map())
+        self.assertFalse(self.outcast_land.hero_attack(by='spell'))
+
     def test_move_hero_right_and_find_enemy(self):
         self.assertTrue(self.outcast_land.move_hero("right"))
         self.assertTrue(self.outcast_land.move_hero("down"))
         self.assertTrue(self.outcast_land.move_hero("down"))
         self.assertTrue(self.outcast_land.move_hero("down"))
+<<<<<<< HEAD
         print(self.outcast_land.show_map())
         self.fighter.learn(Spell(mana_cost=30))
+=======
+        # print(self.outcast_land.show_map())
+        self.fighter.learn(Spell(mana_cost=5))
+>>>>>>> 9fdb57026b8ed38ba952c56a6a5d99ce46b14fa7
         self.assertTrue(self.outcast_land.hero_attack(by='spell'))
 
     def test_move_hero_right_once_hit_bottom_wall(self):
