@@ -10,7 +10,7 @@ class Unit:
         self.attack_points = 0
         self.current_health = self.max_health
         self.current_mana = mana
-        self.has_weapon = {}
+        self.has_weapon = {'name': 'Fist', 'damage': 0}
         self.has_spell = {}
 
     def is_alive(self):
@@ -26,7 +26,6 @@ class Unit:
         if self.has_spell:
             return self.current_mana >= self.has_spell['mana_cost']
         else:
-            print("No Spell to cast")
             return False
 
     def take_healing(self, healing_points):
@@ -57,16 +56,18 @@ class Unit:
             self.has_spell = spell.get_properties()
 
     # enemy can attack withowth weapon or spell
-    def attack(self, by):
+    def attack(self, by='fist'):
         if by == 'weapon':
             if 'damage' in self.has_weapon:
                 return self.has_weapon['damage']
             else:
-                return int(self.attack_points)
+                return self.attack_points
 
         if by == 'spell':
             if 'damage' in self.has_spell:
                 self.current_mana -= self.has_spell['mana_cost']
                 return self.has_spell['damage']
             else:
-                return int(self.attack_points)
+                return self.attack_points
+
+        return self.attack_points

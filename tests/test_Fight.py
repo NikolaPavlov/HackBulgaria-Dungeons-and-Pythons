@@ -12,22 +12,22 @@ class TestFight(unittest.TestCase):
 
     def setUp(self):
         self.pudge = Hero()
-        self.magic = Spell(mana_cost=1)
-        self.sword = Weapon(damage=60)
+        self.magic = Spell(mana_cost=5, damage=33)
+        self.sword = Weapon(damage=30)
         self.pudge.learn(self.magic)
         self.pudge.equip(self.sword)
-        self.battle = Fight(self.pudge, (4, 8), (4, 5), 'spell')
+        self.battle = Fight(self.pudge, (4, 6), (4, 5), 'walk')
 
     def test_direct_and_dist(self):
         direct_and_dist = self.battle.find_direct_and_dist()
         self.assertEqual(direct_and_dist[0], 'right')
-        self.assertEqual(direct_and_dist[1], 3)
+        self.assertEqual(direct_and_dist[1], 1)
 
     def test_is_spell_more_eq_dmg(self):
-        self.assertFalse(self.battle.is_spell_more_eq_dmg())
+        self.assertTrue(self.battle.is_spell_more_eq_dmg())
 
     def test_fight_scenario(self):
-        self.battle.fight_scenario()
+        self.assertTrue(self.battle.fight_scenario())
 
 
 if __name__ == '__main__':

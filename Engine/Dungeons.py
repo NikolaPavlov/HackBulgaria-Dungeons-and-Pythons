@@ -148,13 +148,13 @@ class Dungeon:
     def start_fight(self, fight_type):
         print("You Started a Fight with an Enemy")
         battle = Fight(self.hero, self.hero_position, self.enemy_position, fight_type)
+        battle.fight_scenario()
 
     def hero_attack(self, by):
         attack_type = {'spell': self.hero.has_spell['cast_range'], 'weapon': 1}
         if (by == 'spell' and self.hero.has_spell and self.hero.can_cast()) or by == 'weapon':
             attack_range = attack_type[by]
             if self.find_enemy_in_range(attack_range):
-                self.start_fight(by)
                 return True
         return False
 
