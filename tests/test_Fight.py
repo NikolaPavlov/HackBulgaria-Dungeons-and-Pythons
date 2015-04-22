@@ -6,7 +6,7 @@ from Fight import Fight
 from Hero import Hero
 from Spell import Spell
 from Weapon import Weapon
-
+# WTF IS HAPPANANNASDANSDS ALA BALa TEST !!!!
 
 class TestFight(unittest.TestCase):
 
