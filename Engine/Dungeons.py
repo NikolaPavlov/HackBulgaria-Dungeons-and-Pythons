@@ -176,8 +176,10 @@ class Dungeon:
 class ThisIsNotAHero(Exception):
     pass
 
+
 class NoMoreSpawnPoints(Exception):
     pass
+
 
 class WrongDirection(Exception):
     pass
