@@ -28,6 +28,11 @@ class TestFight(unittest.TestCase):
 
     def test_fight_scenario(self):
         self.assertTrue(self.battle.fight_scenario())
+        print (self.battle)
+
+    def test_combat_logg(self):
+        pass
+
 
 
 if __name__ == '__main__':
