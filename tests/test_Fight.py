@@ -1,4 +1,5 @@
 # Test comment TEST!!!!!
+# WTF IS HAPPANANNASDANSDS ALA BALa TEST !!!!
 import sys
 import unittest
 sys.path.insert(0, '../Engine')
@@ -7,7 +8,7 @@ from Fight import Fight
 from Hero import Hero
 from Spell import Spell
 from Weapon import Weapon
-# WTF IS HAPPANANNASDANSDS ALA BALa TEST !!!!
+
 
 class TestFight(unittest.TestCase):
 
